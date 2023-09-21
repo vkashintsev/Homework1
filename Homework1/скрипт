@@ -1,0 +1,96 @@
+CREATE SCHEMA IF NOT EXISTS eBay
+    AUTHORIZATION pg_database_owner;
+
+GRANT USAGE ON SCHEMA eBay TO PUBLIC;
+
+GRANT ALL ON SCHEMA eBay TO pg_database_owner;
+
+CREATE TABLE IF NOT EXISTS eBay.category (
+    category_id serial,
+	category_name VARCHAR ( 50 ) NOT NULL,
+	PRIMARY KEY(category_id)
+);
+CREATE TABLE IF NOT EXISTS eBay.salesman (
+    	salesman_id serial,
+	salesman_name VARCHAR ( 50 ) NOT NULL,
+	PRIMARY KEY(salesman_id)
+);
+
+CREATE TABLE IF NOT EXISTS eBay.buyer (
+        buyer_id serial,
+	buyer_name VARCHAR ( 50 ) NOT NULL,
+	PRIMARY KEY(buyer_id)
+);
+
+CREATE TABLE IF NOT EXISTS eBay.product (
+        product_id serial,
+	category_id serial,
+	salesman_id serial,
+	product_name VARCHAR ( 50 ) NOT NULL,
+	PRIMARY KEY(product_id)
+);
+
+CREATE TABLE IF NOT EXISTS eBay.order (
+        order_id serial,
+	buyer_id serial,
+	product_id serial,
+	order_name VARCHAR ( 50 ) NOT NULL,
+	price INTEGER NOT NULL,
+	PRIMARY KEY(order_id)
+);
+
+ALTER TABLE eBay.product
+    ADD CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES eBay.category(category_id);
+ALTER TABLE eBay.product
+    ADD CONSTRAINT fk_product_salesman FOREIGN KEY (salesman_id) REFERENCES eBay.salesman(salesman_id);
+
+
+ALTER TABLE eBay.order
+    ADD CONSTRAINT fk_order_buyer FOREIGN KEY (buyer_id)  REFERENCES eBay.buyer(buyer_id);
+ALTER TABLE eBay.order
+    ADD CONSTRAINT fk_order_product FOREIGN KEY (product_id) REFERENCES eBay.product(product_id);
+
+
+
+INSERT INTO "eBay"."Category" (category_id, category_name) VALUES(1, 'First category');
+INSERT INTO "eBay"."Category" (category_id, category_name) VALUES(2, 'Second category');
+INSERT INTO "eBay"."Category" (category_id, category_name) VALUES(3, 'Third category');
+INSERT INTO "eBay"."Category" (category_id, category_name) VALUES(4, 'Fourth category');
+INSERT INTO "eBay"."Category" (category_id, category_name) VALUES(5, 'Fifth category');
+
+INSERT INTO "eBay"."Salesman" (salesman_id, salesman_name) VALUES(1, 'First salesman');
+INSERT INTO "eBay"."Salesman" (salesman_id, salesman_name) VALUES(2, 'Second salesman');
+INSERT INTO "eBay"."Salesman" (salesman_id, salesman_name) VALUES(3, 'Third salesman');
+INSERT INTO "eBay"."Salesman" (salesman_id, salesman_name) VALUES(4, 'Fourth salesman');
+INSERT INTO "eBay"."Salesman" (salesman_id, salesman_name) VALUES(5, 'Fifth salesman');
+
+INSERT INTO "eBay"."Buyer" (buyer_id, buyer_name) VALUES(1, 'First buyer');
+INSERT INTO "eBay"."Buyer" (buyer_id, buyer_name) VALUES(2, 'Second buyer');
+INSERT INTO "eBay"."Buyer" (buyer_id, buyer_name) VALUES(3, 'Third buyer');
+INSERT INTO "eBay"."Buyer" (buyer_id, buyer_name) VALUES(4, 'Fourth buyer');
+INSERT INTO "eBay"."Buyer" (buyer_id, buyer_name) VALUES(5, 'Fifth buyer');
+
+INSERT INTO "eBay"."Product"  (product_id, category_id, salesman_id, product_name)
+VALUES(1, 2, 3, 'First product');
+INSERT INTO "eBay"."Product"  (product_id, category_id, salesman_id, product_name)
+VALUES(2, 1, 2, 'Second product');
+INSERT INTO "eBay"."Product"  (product_id, category_id, salesman_id, product_name)
+VALUES(3, 4, 5, 'Third product');
+INSERT INTO "eBay"."Product"  (product_id, category_id, salesman_id, product_name)
+VALUES(4, 4, 5, 'Fourth product');
+INSERT INTO "eBay"."Product"  (product_id, category_id, salesman_id, product_name)
+VALUES(5, 1, 1, 'Fifth product');
+
+INSERT INTO "eBay"."Order"  (order_id, buyer_id, product_id, price)
+VALUES(1, 2, 3, 100);
+INSERT INTO "eBay"."Order"  (order_id, buyer_id, product_id, price)
+VALUES(2, 1, 2, 150);
+INSERT INTO "eBay"."Order"  (order_id, buyer_id, product_id, price)
+VALUES(3, 4, 5, 200);
+INSERT INTO "eBay"."Order"  (order_id, buyer_id, product_id, price)
+VALUES(4, 4, 5, 250);
+INSERT INTO "eBay"."Order"  (order_id, buyer_id, product_id, price)
+VALUES(5, 1, 1, 300);
+
+
+
